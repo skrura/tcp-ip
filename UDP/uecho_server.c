@@ -31,16 +31,18 @@ int main(int argc,char *argv[])
 	serv_adr.sin_port=htons(atoi(argv[1]));
 	
 	if(bind(serv_sock,(struct sockaddr*)&serv_adr,sizeof(serv_adr))== -1)
-		error_handling("bind() error");
+	 	error_handling("bind() error");
 	while(1)
 	{
 		clnt_adr_sz=sizeof(clnt_adr);
 		str_len=recvfrom(serv_sock,message,BUF_SIZE,0,(struct sockaddr*)&clnt_adr,&clnt_adr_sz);
+		printf("Message from client: %s",message);
 		sendto(serv_sock,message,str_len,0,(struct sockaddr*)&clnt_adr,clnt_adr_sz);
 	}
 	close(serv_sock);
 	return 0;
 }
+
 void error_handling(char *message)
 {
 	fputs(message,stderr);
